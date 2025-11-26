@@ -31,6 +31,7 @@ const TRANSLATIONS = {
         weeks: "Weeks",
         days: "Days",
         hours: "Hours",
+        standby: "Standby",
         impact: {
             low: "Nominal System Load",
             med: "Significant Resource Drain",
@@ -76,8 +77,9 @@ const TRANSLATIONS = {
         weeks: "Semanas",
         days: "Días",
         hours: "Horas",
+        standby: "En Espera",
         impact: {
-            low: "Carga del Sistema Nominal",
+            low: "Bajo Impacto",
             med: "Drenaje de Recursos Significativo",
             high: "IMPACTO CRÍTICO DE VIDA"
         },
@@ -121,8 +123,9 @@ const TRANSLATIONS = {
         weeks: "Semanas",
         days: "Dias",
         hours: "Horas",
+        standby: "Aguardando",
         impact: {
-            low: "Carga Nominal do Sistema",
+            low: "Impacto baixo",
             med: "Dreno de Recursos Significativo",
             high: "IMPACTO VITAL CRÍTICO"
         },
@@ -485,8 +488,11 @@ function resetResultDisplay() {
     document.getElementById('val-hours').innerText = "0";
     document.getElementById('narrative-text').innerText = t.narrative.start;
     
+    // Reset Unit text to the default translated Month
+    document.getElementById('main-result-unit').innerText = t.months;
+
     const badge = document.getElementById('severity-badge');
-    badge.innerText = "Standby";
+    badge.innerText = t.standby;
     badge.className = "px-2 py-1 font-sys text-[10px] font-bold uppercase tracking-widest rounded badge-standby transition-colors duration-300";
     
     updateChart(0,0,0,0);
