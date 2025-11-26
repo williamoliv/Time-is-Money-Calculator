@@ -32,12 +32,10 @@ Navigate to the project folder and open the index.html file in your preferred br
 
 ## 📂 Project Structure
 
-/
-├── index.html      # Main structure and layout
-├── style.css       # Custom styles, animations, and themes
-├── script.js       # Calculation logic, translations, and charts
-└── README.md       # Project documentation
-
+index.html      # Main structure and layout
+style.css       # Custom styles, animations, and themes
+script.js       # Calculation logic, translations, and charts
+README.md       # Project documentation
 
 ## 🎨 Design System
 
@@ -60,4 +58,5 @@ This project is licensed under the MIT License - see the LICENSE.md file for det
 <p align="center">
 Made with 💙 and code by William Oliveira
 </p>
+
 
