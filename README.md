@@ -30,13 +30,6 @@ Time is Money is a web-based financial decision tool that shifts your perspectiv
 ## Open the project:
 Navigate to the project folder and open the index.html file in your preferred browser.
 
-## 📂 Project Structure
-
-index.html      # Main structure and layout
-style.css       # Custom styles, animations, and themes
-script.js       # Calculation logic, translations, and charts
-README.md       # Project documentation
-
 ## 🎨 Design System
 
 * The project uses a clean "White Mode" with Glassmorphism elements:
@@ -58,5 +51,6 @@ This project is licensed under the MIT License - see the LICENSE.md file for det
 <p align="center">
 Made with 💙 and code by William Oliveira
 </p>
+
 
 
