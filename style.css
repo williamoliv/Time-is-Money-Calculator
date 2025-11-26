@@ -1,0 +1,207 @@
+:root {
+    --bg-deep: #f3f4f6;
+    --bg-surface: #ffffff;
+    --accent-primary: #2563eb;
+    --accent-secondary: #64748b;
+    --text-main: #1e293b;
+    --text-dim: #64748b;
+}
+
+body {
+    background-color: var(--bg-deep);
+    color: var(--text-main);
+    overflow-x: hidden;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* --- GLASSMORPHISM / CLEAN CARD COMPONENTS --- */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 16px;
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.05), 
+        0 2px 4px -1px rgba(0, 0, 0, 0.03),
+        inset 0 0 0 1px rgba(255,255,255,0.5);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hover: Lift & Brighten */
+.glass-panel:hover {
+    background: rgba(255, 255, 255, 0.95);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 10px 15px -3px rgba(0, 0, 0, 0.05), 
+        0 4px 6px -2px rgba(0, 0, 0, 0.025),
+        inset 0 0 0 1px rgba(255,255,255,0.8);
+}
+
+/* Active: Pressed */
+.glass-panel:active {
+    transform: translateY(0);
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* --- TYPING CURSOR --- */
+.cursor-blink {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background-color: var(--accent-primary);
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+    margin-left: 2px;
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* --- RIPPLE EFFECT --- */
+.ripple-effect {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(37, 99, 235, 0.1); /* Primary color ripple */
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    pointer-events: none;
+}
+@keyframes ripple {
+    to { transform: scale(4); opacity: 0; }
+}
+
+/* --- PARTICLE BURST --- */
+.particle {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    background: var(--accent-primary);
+    pointer-events: none;
+    border-radius: 50%;
+    z-index: 9999;
+    animation: fadeOut 1s forwards;
+}
+@keyframes fadeOut { to { opacity: 0; transform: scale(0); } }
+
+/* --- DATA STREAM ENTRANCE --- */
+@keyframes streamIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.stream-enter {
+    animation: streamIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* --- LOADING BAR --- */
+.loading-bar-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(0,0,0,0.05);
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.loading-bar-active { opacity: 1; }
+.loading-bar {
+    height: 100%;
+    background: var(--accent-primary);
+    width: 0%;
+    transition: width 0.1s ease-out;
+}
+
+/* --- INPUT STYLES --- */
+.clean-input {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    color: var(--text-main);
+    font-family: 'JetBrains Mono', monospace;
+    transition: all 0.2s ease;
+}
+.clean-input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+.clean-input::placeholder {
+    color: #94a3b8;
+}
+
+.chart-container { position: relative; width: 100%; max-width: 100%; height: 300px; }
+
+/* Clean Grid Background */
+.grid-bg {
+    background-size: 40px 40px;
+    background-image: 
+        linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+
+/* UI Element specifics */
+.lang-btn.active {
+    background: var(--accent-primary);
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+}
+.lang-btn {
+    color: var(--text-dim);
+    transition: all 0.2s ease;
+    font-weight: 600;
+}
+.lang-btn:not(.active):hover {
+    color: var(--text-main);
+    background: rgba(0,0,0,0.05);
+}
+
+.income-type-button.active {
+    background: #ffffff;
+    color: var(--accent-primary);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+}
+.income-type-button {
+    color: var(--text-dim);
+    transition: all 0.2s ease;
+    font-weight: 600;
+    border: 1px solid transparent;
+}
+.income-type-button:not(.active):hover {
+    color: var(--text-main);
+    background: rgba(255,255,255,0.5);
+}
+
+/* Result styling */
+#main-result-value { color: var(--text-main); }
+#main-result-unit { color: var(--accent-primary); }
+
+/* Narrative Text Border */
+#narrative-text {
+    border-left: 3px solid #e2e8f0;
+    padding-left: 1rem;
+}
+#narrative-text:hover {
+    border-left-color: var(--accent-primary);
+}
+
+/* Severity Badge Colors */
+.badge-standby { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
+.badge-low { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+.badge-med { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
+.badge-high { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+
+/* Coffee Button */
+.coffee-btn {
+    background-color: #FFDD00;
+    color: #000000;
+    transition: all 0.2s ease;
+    border: 1px solid #e6c800;
+}
+.coffee-btn:hover {
+    background-color: #ffe64d;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time is Money | Life Calculator</title>
+    
+    <!-- Google Fonts: JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        light: {
+                            bg: '#f3f4f6',       /* Gray-100 */
+                            surface: '#ffffff',  /* White */
+                            primary: '#2563eb',  /* Blue-600 */
+                            secondary: '#64748b',/* Slate-500 */
+                            accent: '#10b981',   /* Emerald-500 */
+                            text: {
+                                main: '#1e293b', /* Slate-800 */
+                                dim: '#64748b'   /* Slate-500 */
+                            }
+                        }
+                    },
+                    fontFamily: {
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                        sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                        sys: ['"SF Mono"', 'Consolas', 'monospace']
+                    },
+                    fontSize: {
+                        'algo-sm': '14px',
+                        'algo-base': '16px',
+                        'algo-lg': '20px',
+                        'algo-xl': '28px',
+                        'algo-2xl': '40px'
+                    },
+                    animation: {
+                        'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col font-sans">
+    
+    <!-- Background Grid -->
+    <div class="fixed inset-0 grid-bg pointer-events-none z-0"></div>
+
+    <main class="relative z-10 container mx-auto px-4 py-8 max-w-6xl flex-grow">
+        
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-center mb-6 border-b border-gray-200 pb-6 stream-enter" style="animation-delay: 0s;">
+            <div class="mb-4 md:mb-0 text-center md:text-left">
+                <h1 class="text-algo-2xl font-mono font-bold tracking-tighter uppercase mb-2 text-light-text-main">
+                    Time is <span class="text-light-primary">Money</span>
+                </h1>
+                <p id="system-status" class="text-light-text-dim font-sys text-algo-sm tracking-widest uppercase h-6 flex items-center justify-center md:justify-start">
+                    <!-- Text injected by JS -->
+                </p>
+            </div>
+            
+            <!-- Language Switcher -->
+            <div class="glass-panel p-1 flex space-x-1 !rounded-full ripple-trigger-area bg-gray-100/50 border-gray-200">
+                <button onclick="setLanguage('en')" id="lang-en" class="particle-trigger px-4 py-1 rounded-full text-xs font-sans lang-btn active">EN</button>
+                <button onclick="setLanguage('es')" id="lang-es" class="particle-trigger px-4 py-1 rounded-full text-xs font-sans lang-btn">ES</button>
+                <button onclick="setLanguage('pt')" id="lang-pt" class="particle-trigger px-4 py-1 rounded-full text-xs font-sans lang-btn">PT</button>
+            </div>
+        </header>
+
+        <!-- Description & Instructions Section -->
+        <section class="mb-8 stream-enter" style="animation-delay: 0.05s;">
+            <div class="glass-panel p-6 bg-white/60 border border-gray-200">
+                <div class="flex flex-col md:flex-row gap-6">
+                    <div class="md:w-2/3">
+                        <h2 id="desc-title" class="text-lg font-bold text-light-text-main mb-2 font-mono">Understanding the True Cost</h2>
+                        <p id="desc-text" class="text-sm text-light-text-dim leading-relaxed">
+                            This tool shifts your perspective from currency to time. By calculating how many hours of your life are exchanged for a purchase, you can make more conscious financial decisions.
+                        </p>
+                    </div>
+                    <div class="md:w-1/3 border-t md:border-t-0 md:border-l border-gray-200 pt-4 md:pt-0 md:pl-6">
+                        <h3 class="text-xs font-bold text-light-primary uppercase tracking-widest mb-3">How it Works</h3>
+                        <ol id="instruction-list" class="text-sm text-light-text-dim space-y-2 list-decimal list-inside font-sys">
+                            <li>Select your currency</li>
+                            <li>Enter the item's price</li>
+                            <li>Input your net income</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Dashboard -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- INPUT SECTION -->
+            <section class="lg:col-span-5 space-y-6 stream-enter" style="animation-delay: 0.1s;">
+                <div class="glass-panel p-6 md:p-8 ripple-container">
+                    <div class="flex items-center space-x-3 mb-6 border-b border-gray-100 pb-4">
+                        <i class="fa-solid fa-sliders text-light-primary text-lg"></i>
+                        <h2 class="text-algo-lg font-mono font-bold uppercase tracking-wider text-light-text-main" id="label-parameters">Parameters</h2>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- Currency -->
+                        <div>
+                            <label class="block text-algo-sm font-sans font-bold text-light-text-dim uppercase mb-2" id="label-currency">Currency</label>
+                            <div class="relative">
+                                <select id="currency-select" class="clean-input text-algo-base w-full rounded-lg px-4 py-3 appearance-none focus:outline-none cursor-pointer bg-white">
+                                    <!-- Options populated by JS -->
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-light-primary">
+                                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Target Cost -->
+                        <div>
+                            <label class="block text-algo-sm font-sans font-bold text-light-text-dim uppercase mb-2" id="label-price">Target Cost</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-light-primary font-mono font-bold text-lg currency-symbol">$</span>
+                                <input type="number" id="input-price" class="clean-input w-full rounded-lg pl-12 pr-4 py-4 text-algo-lg font-bold focus:outline-none" placeholder="0.00">
+                            </div>
+                        </div>
+
+                        <!-- Income -->
+                        <div>
+                            <label class="block text-algo-sm font-sans font-bold text-light-text-dim uppercase mb-2" id="label-income">Net Income Stream</label>
+                            
+                            <div class="grid grid-cols-3 gap-1 mb-3 bg-gray-100/80 p-1 rounded-lg border border-gray-200">
+                                <button onclick="setIncomeType('monthly')" id="btn-monthly" class="particle-trigger py-2 text-xs font-sans rounded uppercase income-type-button active">Monthly</button>
+                                <button onclick="setIncomeType('annually')" id="btn-annually" class="particle-trigger py-2 text-xs font-sans rounded uppercase income-type-button">Annually</button>
+                                <button onclick="setIncomeType('hourly')" id="btn-hourly" class="particle-trigger py-2 text-xs font-sans rounded uppercase income-type-button">Hourly</button>
+                            </div>
+
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-light-primary font-mono font-bold text-lg currency-symbol">$</span>
+                                <input type="number" id="input-income" class="clean-input w-full rounded-lg pl-12 pr-4 py-4 text-algo-lg font-bold focus:outline-none" placeholder="0.00">
+                            </div>
+                            <div class="text-right mt-1">
+                                <span class="text-[10px] font-sys text-light-text-dim uppercase tracking-wider" id="income-helper">Net Monthly Pay</span>
+                            </div>
+                        </div>
+
+                        <!-- Conditional: Hourly -->
+                        <div id="hourly-settings" class="grid grid-cols-2 gap-4 hidden transition-all duration-300">
+                            <div>
+                                <label class="block text-algo-sm font-sans font-bold text-light-text-dim uppercase mb-2" id="label-hours">Hrs/Week</label>
+                                <input type="number" id="input-hours" value="40" class="clean-input w-full rounded-lg px-4 py-3 text-algo-base font-bold focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-algo-sm font-sans font-bold text-light-text-dim uppercase mb-2" id="label-days">Days/Week</label>
+                                <input type="number" id="input-days" value="5" class="clean-input w-full rounded-lg px-4 py-3 text-algo-base font-bold focus:outline-none">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- OUTPUT SECTION -->
+            <section class="lg:col-span-7 space-y-6 stream-enter" style="animation-delay: 0.2s;">
+                
+                <!-- Main Result Card -->
+                <div id="result-card" class="glass-panel p-8 relative overflow-hidden border-light-primary/20 group bg-gradient-to-br from-white to-gray-50">
+                    
+                    <!-- Loading State: Non-linear Progress Bar -->
+                    <div id="calc-progress-container" class="loading-bar-container">
+                        <div id="calc-progress-bar" class="loading-bar"></div>
+                    </div>
+
+                    <div class="relative z-10">
+                        <div class="flex items-center space-x-2 mb-6">
+                            <span id="severity-badge" class="px-2 py-1 font-sys text-[10px] font-bold uppercase tracking-widest rounded badge-standby transition-colors duration-300">
+                                Standby
+                            </span>
+                        </div>
+
+                        <h3 class="text-light-text-dim font-sys text-algo-sm uppercase tracking-widest mb-2" id="label-truecost">Life Energy Cost</h3>
+                        
+                        <div class="flex flex-col md:flex-row md:items-end gap-4 mb-6">
+                            <div class="text-6xl md:text-7xl font-mono font-bold text-light-text-main tracking-tighter" id="result-wrapper">
+                                <span id="main-result-value">0.0</span>
+                            </div>
+                            <div class="text-algo-xl font-mono font-bold text-light-primary pb-2 md:pb-4 uppercase transition-colors duration-500" id="main-result-unit">
+                                Months
+                            </div>
+                        </div>
+
+                        <p class="text-light-text-dim font-sys text-algo-base pl-4 py-1 transition-all duration-300" id="narrative-text">
+                            Awaiting input stream...
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="glass-panel p-4 text-center ripple-container">
+                        <div class="text-xs font-sys uppercase tracking-wider mb-1 text-light-text-dim" id="stat-months">Months</div>
+                        <div class="text-2xl font-mono font-bold text-light-text-main" id="val-months">0</div>
+                    </div>
+                    <div class="glass-panel p-4 text-center ripple-container">
+                        <div class="text-xs font-sys uppercase tracking-wider mb-1 text-light-text-dim" id="stat-weeks">Weeks</div>
+                        <div class="text-2xl font-mono font-bold text-light-text-main" id="val-weeks">0</div>
+                    </div>
+                    <div class="glass-panel p-4 text-center ripple-container">
+                        <div class="text-xs font-sys uppercase tracking-wider mb-1 text-light-text-dim" id="stat-days">Days</div>
+                        <div class="text-2xl font-mono font-bold text-light-text-main" id="val-days">0</div>
+                    </div>
+                    <div class="glass-panel p-4 text-center ripple-container">
+                        <div class="text-xs font-sys uppercase tracking-wider mb-1 text-light-text-dim" id="stat-hours">Hours</div>
+                        <div class="text-2xl font-mono font-bold text-light-text-main" id="val-hours">0</div>
+                    </div>
+                </div>
+
+                <!-- Visualization -->
+                <div class="glass-panel p-4 flex flex-col items-center justify-center">
+                     <h4 class="w-full text-left text-algo-sm font-mono font-bold text-light-text-dim uppercase tracking-wider mb-4 border-b border-gray-100 pb-2">
+                        <i class="fa-solid fa-chart-simple mr-2 text-light-primary"></i> Temporal Distribution
+                     </h4>
+                     <div class="chart-container">
+                        <canvas id="timeChart"></canvas>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+
+        <!-- Footer with Portfolio Link -->
+        <footer class="relative z-10 mt-12 pb-8 text-center border-t border-gray-200 bg-gray-50/80 backdrop-blur-sm stream-enter" style="animation-delay: 0.3s;">
+            <div class="container mx-auto px-4 pt-8">
+                
+                <!-- Links -->
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8 mb-6">
+                    <!-- Portfolio -->
+                    <a href="https://williamoliv.github.io/portfolio/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 text-sm text-light-text-dim hover:text-light-primary transition-colors duration-200 group font-medium">
+                        <span id="footer-portfolio">Designed by William Oliveira</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-50 group-hover:opacity-100 transition-opacity"></i>
+                    </a>
+
+                    <!-- Buy Me a Coffee -->
+                    <a href="https://buymeacoffee.com/williamoliv" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 px-4 py-2 rounded-full text-xs font-bold coffee-btn shadow-sm">
+                        <i class="fa-solid fa-mug-hot"></i>
+                        <span id="footer-coffee">Buy me a coffee</span>
+                    </a>
+                </div>
+
+                <!-- Compliance / Privacy -->
+                <div class="max-w-2xl mx-auto">
+                    <p id="footer-legal" class="text-[10px] text-light-text-dim/70 font-sys leading-relaxed">
+                        Privacy & Terms: This tool operates entirely in your browser. No personal data is stored or transmitted. For informational purposes only.
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- App Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
