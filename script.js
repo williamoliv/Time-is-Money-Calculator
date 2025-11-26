@@ -7,6 +7,7 @@ const TRANSLATIONS = {
         subtitle: "Life Energy Calculator",
         descTitle: "Understanding the True Cost",
         descText: "This tool shifts your perspective from currency to time. By calculating how many hours of your life are exchanged for a purchase, you can make more conscious financial decisions.",
+        howItWorks: "How it Works",
         steps: [
             "Select your currency",
             "Enter the item's price",
@@ -32,6 +33,7 @@ const TRANSLATIONS = {
         days: "Days",
         hours: "Hours",
         standby: "Standby",
+        temporalDist: "Temporal Distribution",
         impact: {
             low: "Nominal System Load",
             med: "Significant Resource Drain",
@@ -53,6 +55,7 @@ const TRANSLATIONS = {
         subtitle: "Calculadora de Energía Vital",
         descTitle: "Entendiendo el Costo Real",
         descText: "Esta herramienta cambia tu perspectiva de moneda a tiempo. Al calcular cuántas horas de tu vida se intercambian por una compra, puedes tomar decisiones financieras más conscientes.",
+        howItWorks: "Cómo Funciona",
         steps: [
             "Selecciona tu moneda",
             "Ingresa el precio del artículo",
@@ -78,8 +81,9 @@ const TRANSLATIONS = {
         days: "Días",
         hours: "Horas",
         standby: "En Espera",
+        temporalDist: "Distribución Temporal",
         impact: {
-            low: "Bajo Impacto",
+            low: "Carga del Sistema Nominal",
             med: "Drenaje de Recursos Significativo",
             high: "IMPACTO CRÍTICO DE VIDA"
         },
@@ -99,6 +103,7 @@ const TRANSLATIONS = {
         subtitle: "Calculadora de Energia Vital",
         descTitle: "Entendendo o Custo Real",
         descText: "Esta ferramenta muda sua perspectiva de moeda para tempo. Ao calcular quantas horas de sua vida são trocadas por uma compra, você pode tomar decisões financeiras mais conscientes.",
+        howItWorks: "Como Funciona",
         steps: [
             "Selecione sua moeda",
             "Insira o preço do item",
@@ -124,8 +129,9 @@ const TRANSLATIONS = {
         days: "Dias",
         hours: "Horas",
         standby: "Aguardando",
+        temporalDist: "Distribuição Temporal",
         impact: {
-            low: "Impacto baixo",
+            low: "Carga Nominal do Sistema",
             med: "Dreno de Recursos Significativo",
             high: "IMPACTO VITAL CRÍTICO"
         },
@@ -394,6 +400,7 @@ function updateLanguageUI() {
     // New description text
     document.getElementById('desc-title').innerText = t.descTitle;
     document.getElementById('desc-text').innerText = t.descText;
+    document.getElementById('desc-how-it-works').innerText = t.howItWorks;
     
     // Update list
     const list = document.getElementById('instruction-list');
@@ -408,6 +415,15 @@ function updateLanguageUI() {
     document.getElementById('footer-portfolio').innerText = t.footer.portfolio;
     document.getElementById('footer-coffee').innerText = t.footer.coffee;
     document.getElementById('footer-legal').innerText = t.footer.legal;
+
+    // Update Temporal Distribution Label
+    document.getElementById('label-distribution').innerHTML = `<i class="fa-solid fa-chart-simple mr-2 text-light-primary"></i> ${t.temporalDist}`;
+
+    // Update Chart Labels
+    if (timeChart) {
+        timeChart.data.labels = [t.months, t.weeks, t.days, t.hours];
+        timeChart.update();
+    }
 }
 
 // Debounce input
